@@ -1,0 +1,9 @@
+<%- include('./components/header.ejs') -%>
+<main>
+  <ul>
+    <% for (let contact of contacts) { %>
+        <li><%= contact.firstName %> <%= contact.lastName %></li>
+    <% } %>
+  </ul>
+</main>
+<%- include('./components/footer.ejs') -%>
