@@ -2,7 +2,7 @@
 <main>
   <ul>
     <% for (let contact of contacts) { %>
-        <li><%= contact.firstName %> <%= contact.lastName %></li>
+        <li><a href="/contact/<%= contact.id %>"><%= contact.firstName %> <%= contact.lastName %></a></li>
     <% } %>
   </ul>
 </main>

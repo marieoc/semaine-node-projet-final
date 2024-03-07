@@ -14,11 +14,12 @@ const homeController = {
     
             for (let contactData of parsedData) {
                 contacts.push({
-                    gender: contactData[0],
-                    lastName: contactData[1],
-                    firstName: contactData[2],
-                    phone: contactData[3],
-                    email: contactData[4],
+                    id: contactData[0],
+                    civility: contactData[1],
+                    lastName: contactData[2],
+                    firstName: contactData[3],
+                    phone: contactData[4],
+                    email: contactData[5],
                 })
             }
             res.render('index', { contacts })
