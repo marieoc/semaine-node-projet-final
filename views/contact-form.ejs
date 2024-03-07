@@ -1,0 +1,28 @@
+<%- include('./components/header.ejs') -%>
+<main>
+    <form action="/add-contact" method="POST">
+        <label>Civility:
+            <select name="civility" id="">
+                <option value="Mr">Mr</option>
+                <option value="Mme">Mme</option>
+            </select>
+        </label>
+        <label>First name:
+            <input type="text" name="firstName">
+        </label>
+        <label>Last name:
+            <input type="text" name="lastName">
+        </label>
+        <label>Phone:
+            <input type="number" name="phone">
+        </label>
+        <label>Email:
+            <input type="email" name="email">
+        </label>
+
+        <div>
+            <button>Submit</button>
+        </div>
+    </form>
+</main>
+<%- include('./components/footer.ejs') -%>

@@ -27,6 +27,33 @@ const contactController = {
 
     res.render("contact", { contact });
   },
+
+  create: async (req, res) => {
+    res.render("contact-form");
+  },
+
+  store: async (req, res) => {
+    // Retrieve form input values
+    const { civility, firstName, lastName, phone, email } = req.body;
+
+    // Retrieve number of contacts
+    const data = await fs.promises.readFile(dataFile, "utf8");
+    const contacts = parse(data, { delimiter: "," });
+    const id = contacts.length + 1;
+
+    // Formatted new contact array
+    const newContact = [id, civility, lastName, firstName, phone, email];
+
+    const stringifiedData = newContact.join(","); // stringify by exploding and concatenate array by adding "," to each el of array
+
+    // Update csv file
+    fs.appendFileSync(dataFile, `\n${stringifiedData}`, (err) => {
+      if (err) throw err;
+      console.log("file updated");
+    });
+
+    res.redirect("/");
+  },
 };
 
 export default contactController;
