@@ -26,6 +26,9 @@
         <label>Email:
             <input type="email" name="email" value="<%= contact && contact.email %>">
         </label>
+        <label>Date: <%= contact && contact.birthdate %>
+            <input type="date" name="birthdate" value="<%= contact && contact.birthdate %>">
+        </label>
 
         <div>
             <button>Submit</button>

@@ -20,6 +20,7 @@ const homeController = {
                     firstName: contactData[3],
                     phone: contactData[4],
                     email: contactData[5],
+                    birthdate: contactData[6],
                 })
             }
             res.render('index', { contacts })

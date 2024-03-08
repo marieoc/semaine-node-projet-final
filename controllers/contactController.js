@@ -23,7 +23,14 @@ const contactController = {
       firstName: contact[3],
       phone: contact[4],
       email: contact[5],
+      birthdate: contact[6],
     };
+
+    // Display formatted date on contact card
+    const date = new Date(contact.birthdate);
+    const formatter = new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    const formattedDate = formatter.format(date);
+    contact.birthdate = formattedDate;
 
     res.render("contact", { contact });
   },
@@ -36,7 +43,7 @@ const contactController = {
 
   store: async (req, res) => {
     // Retrieve form input values
-    const { civility, firstName, lastName, phone, email } = req.body;
+    const { civility, firstName, lastName, phone, email, birthdate } = req.body;
 
     // Retrieve number of contacts
     const data = await fs.promises.readFile(dataFile, "utf8");
@@ -44,7 +51,7 @@ const contactController = {
     const id = contacts.length + 1;
 
     // Formatted new contact array
-    const newContact = [id, civility, lastName, firstName, phone, email];
+    const newContact = [id, civility, lastName, firstName, phone, email, birthdate];
 
     const stringifiedData = newContact.join(","); // stringify by exploding and concatenate array by adding "," to each el of array
 
@@ -76,6 +83,7 @@ const contactController = {
       firstName: contact[3],
       phone: contact[4],
       email: contact[5],
+      birthdate: contact[6],
     };
 
     res.render("contact-form", { contact });
@@ -85,17 +93,16 @@ const contactController = {
     // Retrieve contact id
     const { id } = req.params;
     // Retrieve form input values
-    const { civility, firstName, lastName, phone, email } = req.body;
+    const { civility, firstName, lastName, phone, email, birthdate } = req.body;
 
     // create new data arr
-    const updatedContact = [id, civility, lastName, firstName, phone, email];
+    const updatedContact = [id, civility, lastName, firstName, phone, email, birthdate];
 
     // Find contact in csv file
     fs.readFile(dataFile, "utf8", async (err, data) => {
       if (err) throw err;
 
       const contacts = parse(data, { delimiter: "," });
-      console.log(contacts);
 
       const foundContactIndex = contacts.findIndex(
         (contact) => contact[0] == id
