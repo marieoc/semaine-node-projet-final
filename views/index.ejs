@@ -12,7 +12,11 @@
               <img 
                 width="50"
                 height="50"
-                src="./img/<%= contact.image %>"
+                <% if (contact.image !== "default_pfp.jpg") { %>
+                  src="/img/<%= contact.id %>/<%= contact.image %>"
+                <% } else { %>
+                  src="/img/<%= contact.image %>"
+                <% } %>
                 alt=""
               >
             </div>

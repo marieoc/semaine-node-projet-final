@@ -8,7 +8,16 @@
     <div>Email: <%= contact.email %></div>
     <div>Birthdate: <%= contact.birthdate %></div>
     <div>
-      <img width="50" height="50" src="/img/<%= contact.image %>" alt="<%= contact.firstName %> <%= contact.lastName %>">
+      <img 
+        width="50" 
+        height="50" 
+        <% if (contact.image !== "default_pfp.jpg") { %> 
+          src="/img/<%= contact.id %>/<%= contact.image %>" 
+        <% } else { %>
+          src="/img/<%= contact.image %>"
+        <% } %> 
+          alt="<%= contact.firstName %> <%= contact.lastName %>"
+      >
       <span><%= contact.image %></span>
     </div>
   </div>

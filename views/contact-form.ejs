@@ -33,7 +33,16 @@
         <label>Profile pic:
             <input type="file" name="image">
             <% if (contact && contact.image) { %>
-                <img width="100" height="100" style="object-fit:cover;" src="/img/<%= contact.image %>" alt="">
+                <img 
+                width="50"
+                height="50"
+                <% if (contact.image !== "default_pfp.jpg") { %>
+                  src="/img/<%= contact.id %>/<%= contact.image %>"
+                <% } else { %>
+                  src="/img/<%= contact.image %>"
+                <% } %>
+                alt=""
+              >
             <% } %>
         </label>
 

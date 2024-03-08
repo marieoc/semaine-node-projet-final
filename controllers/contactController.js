@@ -29,7 +29,11 @@ const contactController = {
 
     // Display formatted date on contact card
     const date = new Date(contact.birthdate);
-    const formatter = new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    const formatter = new Intl.DateTimeFormat("fr-FR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
     const formattedDate = formatter.format(date);
     contact.birthdate = formattedDate;
 
@@ -56,22 +60,39 @@ const contactController = {
     let image;
     if (imageFile) {
       image = `${id}-${imageFile.name}`;
-      const imageFilePath = `./public/img/${image}`;
-  
+      const contactDir = `./public/img/${id}`;
+      const imageFilePath = `${contactDir}/${image}`;
+
+      // Check if contact directory exists
+      if (!fs.existsSync(contactDir)) {
+        fs.mkdirSync(contactDir, { recursive: true });
+      } else {
+        console.log("directory already exists");
+      }
+
       if (!fs.existsSync(imageFilePath))
-      // move image to 'public' folder
-      imageFile.mv(imageFilePath, (err) => {
-        if (err) {
+        // move image to 'public' folder
+        imageFile.mv(imageFilePath, (err) => {
+          if (err) {
             console.log(err);
-        }
-      })
+          }
+        });
       // If contact has no file uploaded, give default profile picture
     } else {
       image = "default_pfp.jpg";
     }
 
     // Formatted new contact array
-    const newContact = [id, civility, lastName, firstName, phone, email, birthdate, image];
+    const newContact = [
+      id,
+      civility,
+      lastName,
+      firstName,
+      phone,
+      email,
+      birthdate,
+      image,
+    ];
 
     let stringifiedData = newContact.join(","); // stringify by exploding and concatenate array by adding "," to each el of array
     let updatedFile;
@@ -93,12 +114,10 @@ const contactController = {
   edit: async (req, res) => {
     // Retrieve params
     const { id } = req.params;
-    console.log(id)
 
     // Retrieve contacts
     const data = await fs.promises.readFile(dataFile, "utf8");
     const contacts = await parse(data, { delimiter: "," });
-    console.log(contacts)
 
     // Find contact
     let contact = contacts.find((el) => id == el[0]);
@@ -121,7 +140,7 @@ const contactController = {
   update: async (req, res) => {
     // Retrieve contact id
     const { id } = req.params;
-    console.log(id)
+    console.log(id);
     // Retrieve form input values
     const { civility, firstName, lastName, phone, email, birthdate } = req.body;
 
@@ -130,25 +149,63 @@ const contactController = {
     // console.log(imageFile)
 
     // Image
+    let defaultProfilePicture = "default_pfp.jpg";
     let image;
-    if (imageFile) {
+
+    // Retrieve contacts
+    const data = await fs.promises.readFile(dataFile, "utf8");
+    const contacts = await parse(data, { delimiter: "," });
+    // Find contact
+    let contact = contacts.find((el) => id == el[0]);
+
+    // If no image provided, then give default profil picture
+    if (!imageFile && contact[7] === defaultProfilePicture) {
+      image = defaultProfilePicture;
+
+      // If no image but contact already had pfp
+    } else if (!imageFile && contact[7] !== defaultProfilePicture) {
+      console.log("no new image loaded");
+      // Reassign previous saved pfp
+      image = contact[7];
+
+    // If image was loaded
+    } else if (imageFile) {
       image = `${id}-${imageFile.name}`;
-      const imageFilePath = `./public/img/${image}`;
-  
-      if (!fs.existsSync(imageFilePath))
+      const contactDir = `./public/img/${id}`;
+      const imageFilePath = `${contactDir}/${image}`;
+
+      if (!fs.existsSync(contactDir)) {
+        fs.mkdirSync(contactDir, { recursive: true });
+      } else {
+        console.log("directory already exists");
+      }
+
+      // If another picture was updated before, throw it -- except for default pfp
+      if (contact[7] !== defaultProfilePicture) {
+        const oldImageFilePath = `${contactDir}/${contact[7]}`;
+        fs.unlink(oldImageFilePath, () => {
+          console.log(`${oldImageFilePath} was deleted`)
+        })
+      }
       // move image to 'public' folder
       imageFile.mv(imageFilePath, (err) => {
         if (err) {
-            console.log(err);
+          console.log(err);
         }
-      })
-      // If no image provided, then give default profil picture
-    } else {
-      image = "default_pfp.jpg";
+      });
     }
 
     // create new data arr
-    const updatedContact = [id, civility, lastName, firstName, phone, email, birthdate, image];
+    const updatedContact = [
+      id,
+      civility,
+      lastName,
+      firstName,
+      phone,
+      email,
+      birthdate,
+      image,
+    ];
 
     // Find contact in csv file
     fs.readFile(dataFile, "utf8", async (err, data) => {
