@@ -2,8 +2,15 @@
 <main>
   <ul>
     <% for (let contact of contacts) { %>
+      <% let today = new Date();
+        let contactBirthdate = new Date(contact.birthdate);
+        let isBirthday = today.getDate() === contactBirthdate.getDate() && today.getMonth() === contactBirthdate.getMonth();
+      %>
         <li>
           <a href="/contact/<%= contact.id %>"><%= contact.firstName %> <%= contact.lastName %></a>
+          <% if (isBirthday) { %>
+            🎂 This is <%= contact.civility === "Mr" ? "his" : "her" %> birtday!
+          <% } %>
           <form action="/delete-contact/<%= contact.id %>" method="POST">
             <button type="submit">X</button>
           </form>
