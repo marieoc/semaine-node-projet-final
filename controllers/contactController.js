@@ -2,6 +2,7 @@ import fs from "fs";
 import { parse } from "csv-parse/sync";
 import retrieveContact from "../utils/retrieveContact.js";
 import retrieveContacts from "../utils/retrieveContacts.js";
+import moveImageToFolder from "../utils/moveImageToFolder.js";
 
 let dataFile = "./data/contacts.csv";
 
@@ -60,20 +61,9 @@ const contactController = {
       const contactDir = `./public/img/${id}`;
       const imageFilePath = `${contactDir}/${image}`;
 
-      // Check if contact directory exists
-      if (!fs.existsSync(contactDir)) {
-        fs.mkdirSync(contactDir, { recursive: true });
-      } else {
-        console.log("directory already exists");
-      }
-
-      if (!fs.existsSync(imageFilePath))
-        // move image to 'public' folder
-        imageFile.mv(imageFilePath, (err) => {
-          if (err) {
-            console.log(err);
-          }
-        });
+      // Move image to contact folder
+      await moveImageToFolder(contactDir, imageFile, imageFilePath); 
+      
       // If contact has no file uploaded, give default profile picture
     } else {
       image = "default_pfp.jpg";
@@ -165,12 +155,6 @@ const contactController = {
       const contactDir = `./public/img/${id}`;
       const imageFilePath = `${contactDir}/${image}`;
 
-      if (!fs.existsSync(contactDir)) {
-        fs.mkdirSync(contactDir, { recursive: true });
-      } else {
-        console.log("directory already exists");
-      }
-
       // If another picture was updated before, throw it -- except for default pfp
       if (contact[7] !== defaultProfilePicture) {
         const oldImageFilePath = `${contactDir}/${contact[7]}`;
@@ -178,12 +162,9 @@ const contactController = {
           console.log(`${oldImageFilePath} was deleted`)
         })
       }
-      // move image to 'public' folder
-      imageFile.mv(imageFilePath, (err) => {
-        if (err) {
-          console.log(err);
-        }
-      });
+
+      // Move new image to contact folder
+      await moveImageToFolder(contactDir, imageFile, imageFilePath); 
     }
 
     // create new data arr
