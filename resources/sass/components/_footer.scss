@@ -1,0 +1,6 @@
+footer {
+    width: 100%;
+    @include mixins.flex-center();
+    flex-wrap: wrap;
+    margin-top: auto;
+}

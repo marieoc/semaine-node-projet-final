@@ -8,7 +8,7 @@
       %>
         <li class="contact-list__content">
           <div>
-            <div>
+            <div class="img__wrapper">
               <img 
                 width="50"
                 height="50"
@@ -20,13 +20,15 @@
                 alt=""
               >
             </div>
-            <a href="/contact/<%= contact.id %>"><%= contact.firstName %> <%= contact.lastName %></a>
-            <% if (isBirthday) { %>
-              🎂 This is <%= contact.civility === "Mr" ? "his" : "her" %> birtday!
-            <% } %>
+            <div>
+              <a href="/contact/<%= contact.id %>"><%= contact.firstName %> <%= contact.lastName %></a>
+              <% if (isBirthday) { %>
+                🎂 This is <%= contact.civility === "Mr" ? "his" : "her" %> birtday!
+              <% } %>
+            </div>
           </div>
           <form action="/delete-contact/<%= contact.id %>" method="POST">
-            <button type="submit">X</button>
+            <button class="delete-btn" type="submit">X</button>
           </form>
         </li>
     <% } %>

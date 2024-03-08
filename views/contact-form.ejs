@@ -1,5 +1,5 @@
 <%- include('./components/header.ejs') -%>
-<main>
+<main class="contact-form__wrapper">
     <form 
         <% if (contact) { %>
             action="/modify-contact/<%= contact.id %>" 
@@ -16,34 +16,36 @@
             </select>
         </label>
         <label>First name:
-            <input type="text" name="firstName" value="<%= contact && contact.firstName %>">
+            <input type="text" name="firstName" value="<%= contact && contact.firstName %>" required>
         </label>
         <label>Last name:
-            <input type="text" name="lastName" value="<%= contact && contact.lastName %>">
+            <input type="text" name="lastName" value="<%= contact && contact.lastName %>" required>
         </label>
         <label>Phone:
-            <input type="number" name="phone" value="<%= contact && contact.phone %>">
+            <input type="number" name="phone" value="<%= contact && contact.phone %>" required>
         </label>
         <label>Email:
-            <input type="email" name="email" value="<%= contact && contact.email %>">
+            <input type="email" name="email" value="<%= contact && contact.email %>" required>
         </label>
         <label>Date: <%= contact && contact.birthdate %>
-            <input type="date" name="birthdate" value="<%= contact && contact.birthdate %>">
+            <input type="date" name="birthdate" value="<%= contact && contact.birthdate %>" required>
         </label>
         <label>Profile pic:
-            <input type="file" name="image">
-            <% if (contact && contact.image) { %>
-                <img 
-                width="50"
-                height="50"
-                <% if (contact.image !== "default_pfp.jpg") { %>
-                  src="/img/<%= contact.id %>/<%= contact.image %>"
-                <% } else { %>
-                  src="/img/<%= contact.image %>"
+            <div class="img-input__wrapper">
+                <input type="file" name="image">
+                <% if (contact && contact.image) { %>
+                    <img 
+                    width="50"
+                    height="50"
+                    <% if (contact.image !== "default_pfp.jpg") { %>
+                      src="/img/<%= contact.id %>/<%= contact.image %>"
+                    <% } else { %>
+                      src="/img/<%= contact.image %>"
+                    <% } %>
+                    alt=""
+                  >
                 <% } %>
-                alt=""
-              >
-            <% } %>
+            </div>
         </label>
 
         <div>

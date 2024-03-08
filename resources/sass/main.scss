@@ -2,6 +2,7 @@
 @use 'mixins';
 
 @import './components/header';
+@import './components/footer';
 
 html {
     font-size: 62.5%;
@@ -54,9 +55,84 @@ a, button {
         .contact-list__content {
             width: 100%;
             max-width: 400px;
+            padding: 1rem;
             @include mixins.white-transparent-card();
             @include mixins.box-shadow-bottom();
             @include mixins.space-between();
+
+            > div {
+                @include mixins.flex-center();
+
+                .img__wrapper {
+                    padding: 1rem;
+                }
+
+                a {
+                    display:block;
+                    text-transform: capitalize;
+                    font-weight: 600;
+                }
+            }
+
+            .delete-btn {
+                padding: 0.5rem;
+            }
+
+        }
+    }
+}
+
+.contact-card__wrapper {
+    width: 100%;
+    padding: 3em 0;
+    @include mixins.flex-center-column();
+
+    .contact-card {
+        width: 100%;
+        max-width: 300px;
+        padding: 1rem;
+        @include mixins.white-transparent-card();
+        @include mixins.box-shadow-bottom();
+        @include mixins.flex-center-column();
+        gap: 2rem;
+    }
+
+    .edit-btn__wrapper {
+        margin: 2em 0;
+        @include mixins.flex-center();
+
+        a {
+            padding: 1rem;
+            @include mixins.box-shadow-bottom();
+            border-radius: 33px;
+        }
+    }
+}
+
+
+.contact-form__wrapper {
+    width: 100%;
+    padding: 3em 0;
+    @include mixins.flex-center-column();
+
+    form {
+        margin: 1rem 0;
+        padding: 2rem;
+        width: 100%;
+        max-width: 400px;
+        @include mixins.flex-center-column();
+        gap: 1rem;
+
+        label, input, select {
+            width: 100%;
+        }
+
+        input, select {
+            padding: 0.5rem;
+        }
+
+        .img-input__wrapper {
+            @include mixins.flex-center();
         }
     }
 }

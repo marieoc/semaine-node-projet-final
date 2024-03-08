@@ -1,6 +1,6 @@
 <%- include('./components/header.ejs') -%>
-<main>
-  <div>
+<main class="contact-card__wrapper">
+  <div class="contact-card">
     <div>Civility: <%= contact.civility %></div>
     <div>Last name: <%= contact.lastName %></div>
     <div>First name: <%= contact.firstName %></div>
@@ -21,7 +21,7 @@
       <span><%= contact.image %></span>
     </div>
   </div>
-  <div>
+  <div class="edit-btn__wrapper">
     <a href="/modify-contact/<%= contact.id %>">Edit contact</a>
   </div>
 </main>
