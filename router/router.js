@@ -14,4 +14,6 @@ router.post('/add-contact', contactController.store);
 router.get('/modify-contact/:id', contactController.edit);
 router.post('/modify-contact/:id', contactController.update);
 
+router.post('/delete-contact/:id', contactController.destroy);
+
 export default router;

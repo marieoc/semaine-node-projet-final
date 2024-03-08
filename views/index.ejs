@@ -2,7 +2,12 @@
 <main>
   <ul>
     <% for (let contact of contacts) { %>
-        <li><a href="/contact/<%= contact.id %>"><%= contact.firstName %> <%= contact.lastName %></a></li>
+        <li>
+          <a href="/contact/<%= contact.id %>"><%= contact.firstName %> <%= contact.lastName %></a>
+          <form action="/delete-contact/<%= contact.id %>" method="POST">
+            <button type="submit">X</button>
+          </form>
+        </li>
     <% } %>
   </ul>
 </main>

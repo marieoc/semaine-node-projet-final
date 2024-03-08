@@ -114,9 +114,39 @@ const contactController = {
         await fs.promises.writeFile(dataFile, updatedData, "utf8");
       }
       console.log("file updated");
-    });
 
-    res.redirect("/");
+      res.redirect("/");
+    });
+  },
+
+  destroy: async (req, res) => {
+    let contactId = req.params.id;
+
+    // Read file
+    fs.readFile(dataFile, "utf8", async (err, data) => {
+      const contacts = parse(data, { delimiter: "," });
+
+      // Find index
+      const contactIndex = contacts.findIndex(
+        (contact) => contact[0] == contactId
+      );
+      console.log(contactIndex);
+
+      // Remove contact from array
+      let contactArr = contacts.filter((contact) => contact[0] != contactId);
+      console.log(contactArr);
+
+      // Stringify updated data
+      let updatedData = contactArr
+        .map((contact) => contact.join(","))
+        .join("\n");
+
+      // Wait until file is completely written with updated data
+      await fs.promises.writeFile(dataFile, updatedData, "utf8");
+
+      // Redirect inside
+      res.redirect("/");
+    });
   },
 };
 
