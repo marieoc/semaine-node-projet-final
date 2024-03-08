@@ -1,5 +1,7 @@
 import fs from "fs";
 import { parse } from "csv-parse/sync";
+import retrieveContact from "../utils/retrieveContact.js";
+import retrieveContacts from "../utils/retrieveContacts.js";
 
 let dataFile = "./data/contacts.csv";
 
@@ -8,12 +10,8 @@ const contactController = {
     // Retrieve params
     const { id } = req.params;
 
-    // Get all data and parse them
-    let data = await fs.promises.readFile(dataFile, "utf8");
-    const parsedData = await parse(data, { delimiter: "," });
-
     // Find contact by id
-    let contact = parsedData.find((el) => el[0] == id);
+    let contact = await retrieveContact(dataFile, id);
 
     // Format found contact
     contact = {
@@ -52,8 +50,7 @@ const contactController = {
     const imageFile = req.files?.image;
 
     // Retrieve number of contacts
-    const data = await fs.promises.readFile(dataFile, "utf8");
-    const contacts = await parse(data, { delimiter: "," });
+    const contacts = await retrieveContacts(dataFile);
     const id = contacts.length + 1;
 
     // Image
@@ -115,12 +112,8 @@ const contactController = {
     // Retrieve params
     const { id } = req.params;
 
-    // Retrieve contacts
-    const data = await fs.promises.readFile(dataFile, "utf8");
-    const contacts = await parse(data, { delimiter: "," });
-
     // Find contact
-    let contact = contacts.find((el) => id == el[0]);
+    let contact = await retrieveContact(dataFile, id);
 
     // Format data to give it properties
     contact = {
@@ -152,11 +145,9 @@ const contactController = {
     let defaultProfilePicture = "default_pfp.jpg";
     let image;
 
-    // Retrieve contacts
-    const data = await fs.promises.readFile(dataFile, "utf8");
-    const contacts = await parse(data, { delimiter: "," });
+
     // Find contact
-    let contact = contacts.find((el) => id == el[0]);
+    let contact = await retrieveContact(dataFile, id);
 
     // If no image provided, then give default profil picture
     if (!imageFile && contact[7] === defaultProfilePicture) {

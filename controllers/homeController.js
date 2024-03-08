@@ -1,6 +1,4 @@
-import fs from "fs";
-import { parse } from "csv-parse/sync";
-
+import retrieveContacts from "../utils/retrieveContacts.js";
 
 let dataFile = "./data/contacts.csv";
 
@@ -9,8 +7,8 @@ const homeController = {
         try {
             let contacts = [];
     
-            const data = await fs.promises.readFile(dataFile, 'utf8'); // wait until whole file is read
-            const parsedData = parse(data, { delimiter: ',' }) // retrieve parsed data from synchronous module
+            // Retrieve contacts parsed data
+            const parsedData = await retrieveContacts(dataFile);
     
             for (let contactData of parsedData) {
                 contacts.push({
