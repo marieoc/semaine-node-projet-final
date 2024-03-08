@@ -7,5 +7,8 @@
     <div>Phone: <%= contact.phone %></div>
     <div>Email: <%= contact.email %></div>
   </div>
+  <div>
+    <a href="/modify-contact/<%= contact.id %>">Edit contact</a>
+  </div>
 </main>
 <%- include('./components/footer.ejs') -%>

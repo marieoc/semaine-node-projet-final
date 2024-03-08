@@ -1,23 +1,30 @@
 <%- include('./components/header.ejs') -%>
 <main>
-    <form action="/add-contact" method="POST">
+    <form 
+        <% if (contact) { %>
+            action="/modify-contact/<%= contact.id %>" 
+        <% } else { %>
+            action="/add-contact" 
+        <% } %>
+        method="POST"
+    >
         <label>Civility:
             <select name="civility" id="">
-                <option value="Mr">Mr</option>
-                <option value="Mme">Mme</option>
+                <option value="Mr" <%= contact && contact.civility === "Mr" ? 'selected' : '' %>>Mr</option>
+                <option value="Mme" <%= contact && contact.civility === "Mme" ? 'selected' : '' %> >Mme</option>
             </select>
         </label>
         <label>First name:
-            <input type="text" name="firstName">
+            <input type="text" name="firstName" value="<%= contact && contact.firstName %>">
         </label>
         <label>Last name:
-            <input type="text" name="lastName">
+            <input type="text" name="lastName" value="<%= contact && contact.lastName %>">
         </label>
         <label>Phone:
-            <input type="number" name="phone">
+            <input type="number" name="phone" value="<%= contact && contact.phone %>">
         </label>
         <label>Email:
-            <input type="email" name="email">
+            <input type="email" name="email" value="<%= contact && contact.email %>">
         </label>
 
         <div>
