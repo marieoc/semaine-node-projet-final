@@ -1,0 +1,62 @@
+@use 'fonts';
+@use 'mixins';
+
+@import './components/header';
+
+html {
+    font-size: 62.5%;
+    scroll-behavior: smooth;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-size: 1.5rem;
+    font-family: 'Manrope';
+}
+
+body * {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+ul, ol {
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    color: #000;
+}
+
+a, button {
+    padding: 0; 
+    margin: 0;
+}
+
+.contact-list__wrapper {
+    width: 100%;
+    padding: 3em 0;
+
+    .contact-list {
+        width: 100%;
+        @include mixins.flex-center-column();
+        gap: 2rem;
+
+        .contact-list__content {
+            width: 100%;
+            max-width: 400px;
+            @include mixins.white-transparent-card();
+            @include mixins.box-shadow-bottom();
+            @include mixins.space-between();
+        }
+    }
+}
