@@ -10,7 +10,7 @@ const contactController = {
 
     // Get all data and parse them
     let data = await fs.promises.readFile(dataFile, "utf8");
-    const parsedData = parse(data, { delimiter: "," });
+    const parsedData = await parse(data, { delimiter: "," });
 
     // Find contact by id
     let contact = parsedData.find((el) => el[0] == id);
@@ -24,6 +24,7 @@ const contactController = {
       phone: contact[4],
       email: contact[5],
       birthdate: contact[6],
+      image: contact[7],
     };
 
     // Display formatted date on contact card
@@ -44,19 +45,44 @@ const contactController = {
   store: async (req, res) => {
     // Retrieve form input values
     const { civility, firstName, lastName, phone, email, birthdate } = req.body;
+    const imageFile = req.files?.image;
 
     // Retrieve number of contacts
     const data = await fs.promises.readFile(dataFile, "utf8");
-    const contacts = parse(data, { delimiter: "," });
+    const contacts = await parse(data, { delimiter: "," });
     const id = contacts.length + 1;
 
-    // Formatted new contact array
-    const newContact = [id, civility, lastName, firstName, phone, email, birthdate];
+    // Image
+    let image;
+    if (imageFile) {
+      image = `${id}-${imageFile.name}`;
+      const imageFilePath = `./public/img/${image}`;
+  
+      if (!fs.existsSync(imageFilePath))
+      // move image to 'public' folder
+      imageFile.mv(imageFilePath, (err) => {
+        if (err) {
+            console.log(err);
+        }
+      })
+      // If contact has no file uploaded, give default profile picture
+    } else {
+      image = "default_pfp.jpg";
+    }
 
-    const stringifiedData = newContact.join(","); // stringify by exploding and concatenate array by adding "," to each el of array
+    // Formatted new contact array
+    const newContact = [id, civility, lastName, firstName, phone, email, birthdate, image];
+
+    let stringifiedData = newContact.join(","); // stringify by exploding and concatenate array by adding "," to each el of array
+    let updatedFile;
+    if (contacts.length === 0) {
+      updatedFile = stringifiedData;
+    } else {
+      updatedFile = `\n${stringifiedData}`;
+    }
 
     // Update csv file
-    fs.appendFileSync(dataFile, `\n${stringifiedData}`, (err) => {
+    await fs.promises.appendFile(dataFile, updatedFile, (err) => {
       if (err) throw err;
       console.log("file updated");
     });
@@ -67,10 +93,12 @@ const contactController = {
   edit: async (req, res) => {
     // Retrieve params
     const { id } = req.params;
+    console.log(id)
 
     // Retrieve contacts
     const data = await fs.promises.readFile(dataFile, "utf8");
-    const contacts = parse(data, { delimiter: "," });
+    const contacts = await parse(data, { delimiter: "," });
+    console.log(contacts)
 
     // Find contact
     let contact = contacts.find((el) => id == el[0]);
@@ -84,6 +112,7 @@ const contactController = {
       phone: contact[4],
       email: contact[5],
       birthdate: contact[6],
+      image: contact[7],
     };
 
     res.render("contact-form", { contact });
@@ -92,11 +121,34 @@ const contactController = {
   update: async (req, res) => {
     // Retrieve contact id
     const { id } = req.params;
+    console.log(id)
     // Retrieve form input values
     const { civility, firstName, lastName, phone, email, birthdate } = req.body;
 
+    // Retrieve image file
+    const imageFile = req.files?.image;
+    // console.log(imageFile)
+
+    // Image
+    let image;
+    if (imageFile) {
+      image = `${id}-${imageFile.name}`;
+      const imageFilePath = `./public/img/${image}`;
+  
+      if (!fs.existsSync(imageFilePath))
+      // move image to 'public' folder
+      imageFile.mv(imageFilePath, (err) => {
+        if (err) {
+            console.log(err);
+        }
+      })
+      // If no image provided, then give default profil picture
+    } else {
+      image = "default_pfp.jpg";
+    }
+
     // create new data arr
-    const updatedContact = [id, civility, lastName, firstName, phone, email, birthdate];
+    const updatedContact = [id, civility, lastName, firstName, phone, email, birthdate, image];
 
     // Find contact in csv file
     fs.readFile(dataFile, "utf8", async (err, data) => {

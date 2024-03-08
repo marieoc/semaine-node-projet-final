@@ -21,6 +21,7 @@ const homeController = {
                     phone: contactData[4],
                     email: contactData[5],
                     birthdate: contactData[6],
+                    image: contactData[7],
                 })
             }
             res.render('index', { contacts })

@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "dev": "nodemon server"
+    "dev": "nodemon server & npm run scss",
+    "scss": "sass --watch resources/sass/main.scss public/css/main.css"
   },
   "author": "",
   "license": "ISC",
@@ -14,10 +15,12 @@
     "csv-parse": "^5.5.5",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.9",
-    "express": "^4.18.3"
+    "express": "^4.18.3",
+    "express-fileupload": "^1.4.3"
   },
   "devDependencies": {
-    "nodemon": "^3.1.0"
+    "nodemon": "^3.1.0",
+    "sass": "^1.71.1"
   },
   "type": "module"
 }

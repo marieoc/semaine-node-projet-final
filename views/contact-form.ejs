@@ -7,6 +7,7 @@
             action="/add-contact" 
         <% } %>
         method="POST"
+        encType="multipart/form-data"
     >
         <label>Civility:
             <select name="civility" id="">
@@ -28,6 +29,12 @@
         </label>
         <label>Date: <%= contact && contact.birthdate %>
             <input type="date" name="birthdate" value="<%= contact && contact.birthdate %>">
+        </label>
+        <label>Profile pic:
+            <input type="file" name="image">
+            <% if (contact && contact.image) { %>
+                <img width="100" height="100" style="object-fit:cover;" src="/img/<%= contact.image %>" alt="">
+            <% } %>
         </label>
 
         <div>

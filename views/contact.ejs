@@ -7,6 +7,10 @@
     <div>Phone: <%= contact.phone %></div>
     <div>Email: <%= contact.email %></div>
     <div>Birthdate: <%= contact.birthdate %></div>
+    <div>
+      <img width="50" height="50" src="/img/<%= contact.image %>" alt="<%= contact.firstName %> <%= contact.lastName %>">
+      <span><%= contact.image %></span>
+    </div>
   </div>
   <div>
     <a href="/modify-contact/<%= contact.id %>">Edit contact</a>

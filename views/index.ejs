@@ -1,16 +1,26 @@
 <%- include('./components/header.ejs') -%>
-<main>
-  <ul>
+<main class="contact-list__wrapper">
+  <ul class="contact-list">
     <% for (let contact of contacts) { %>
       <% let today = new Date();
         let contactBirthdate = new Date(contact.birthdate);
         let isBirthday = today.getDate() === contactBirthdate.getDate() && today.getMonth() === contactBirthdate.getMonth();
       %>
-        <li>
-          <a href="/contact/<%= contact.id %>"><%= contact.firstName %> <%= contact.lastName %></a>
-          <% if (isBirthday) { %>
-            🎂 This is <%= contact.civility === "Mr" ? "his" : "her" %> birtday!
-          <% } %>
+        <li class="contact-list__content">
+          <div>
+            <div>
+              <img 
+                width="50"
+                height="50"
+                src="./img/<%= contact.image %>"
+                alt=""
+              >
+            </div>
+            <a href="/contact/<%= contact.id %>"><%= contact.firstName %> <%= contact.lastName %></a>
+            <% if (isBirthday) { %>
+              🎂 This is <%= contact.civility === "Mr" ? "his" : "her" %> birtday!
+            <% } %>
+          </div>
           <form action="/delete-contact/<%= contact.id %>" method="POST">
             <button type="submit">X</button>
           </form>
