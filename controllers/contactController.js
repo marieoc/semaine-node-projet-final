@@ -3,6 +3,7 @@ import { parse } from "csv-parse/sync";
 import retrieveContact from "../utils/retrieveContact.js";
 import retrieveContacts from "../utils/retrieveContacts.js";
 import moveImageToFolder from "../utils/moveImageToFolder.js";
+import validateInput from "../utils/validateInput.js";
 
 let dataFile = "./data/contacts.csv";
 
@@ -36,19 +37,25 @@ const contactController = {
     const formattedDate = formatter.format(date);
     contact.birthdate = formattedDate;
 
-    res.render("contact", { contact });
+    res.render("contact", { contact, message: null });
   },
 
   create: async (req, res) => {
     let contact = null; // pass contact variable to view so form can either be used for creating or updating
 
-    res.render("contact-form", { contact });
+    res.render("contact-form", { contact, message: null });
   },
 
   store: async (req, res) => {
     // Retrieve form input values
     const { civility, firstName, lastName, phone, email, birthdate } = req.body;
     const imageFile = req.files?.image;
+
+    // Server-side validation of inputs
+    const isValidated = validateInput(req.body);
+    if (!isValidated) {
+      return res.render("contact-form", { contact: null, message: "All fields are required"});
+    }
 
     // Retrieve number of contacts
     const contacts = await retrieveContacts(dataFile);

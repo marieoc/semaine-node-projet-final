@@ -1,5 +1,10 @@
 <%- include('./components/header.ejs') -%>
 <main class="contact-form__wrapper">
+    <% if (message !=null) { %>
+        <div class="error-msg">
+          <%= message %>
+        </div>
+    <% } %>
     <form 
         <% if (contact) { %>
             action="/modify-contact/<%= contact.id %>" 
@@ -16,19 +21,19 @@
             </select>
         </label>
         <label>First name:
-            <input type="text" name="firstName" value="<%= contact && contact.firstName %>" required>
+            <input type="text" name="firstName" value="<%= contact && contact.firstName %>" required >
         </label>
         <label>Last name:
-            <input type="text" name="lastName" value="<%= contact && contact.lastName %>" required>
+            <input type="text" name="lastName" value="<%= contact && contact.lastName %>" required >
         </label>
         <label>Phone:
-            <input type="number" name="phone" value="<%= contact && contact.phone %>" required>
+            <input type="number" name="phone" value="<%= contact && contact.phone %>" required >
         </label>
         <label>Email:
-            <input type="email" name="email" value="<%= contact && contact.email %>" required>
+            <input type="email" name="email" value="<%= contact && contact.email %>" required >
         </label>
         <label>Date: <%= contact && contact.birthdate %>
-            <input type="date" name="birthdate" value="<%= contact && contact.birthdate %>" required>
+            <input type="date" name="birthdate" value="<%= contact && contact.birthdate %>" required >
         </label>
         <label>Profile pic:
             <div class="img-input__wrapper">
